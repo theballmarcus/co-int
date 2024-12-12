@@ -1,11 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { loginUser, heartBeat} from './api';
-import { set } from 'mongoose';
 
-// Create the AuthContext
 const AuthContext = createContext();
 
-// AuthProvider component
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null); 
@@ -16,6 +13,7 @@ export const AuthProvider = ({ children }) => {
     const [email, setEmail] = useState(null);
     const [tags, setTags] = useState([]);
     const [token, setToken] = useState(null);
+    const [userId, setUserId] = useState(null);
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
@@ -37,7 +35,7 @@ export const AuthProvider = ({ children }) => {
         if (age) setAge(JSON.parse(age));
         if (email) setEmail(JSON.parse(email));
         if (tags) setTags(JSON.parse(tags));
-        console.log(description, tags)
+        if (userId) setUserId(JSON.parse(userId));
     }, []);
 
     const login = async (email, password) => {
@@ -46,13 +44,14 @@ export const AuthProvider = ({ children }) => {
             if (response.ok) {
                 const data = response;
                 localStorage.setItem('authToken', data.token);
-                localStorage.setItem('friends', JSON.stringify(data.friends)); // Save friends list
-                localStorage.setItem('description', JSON.stringify(data.description)); // Save user description
-                localStorage.setItem('gamertag', JSON.stringify(data.gamertag)); // Save gamertag
-                localStorage.setItem('age', JSON.stringify(data.age)); // Save user age
-                localStorage.setItem('email', JSON.stringify(data.email)); // Save user email
-                localStorage.setItem('tags', JSON.stringify(data.tags)); // Save tags
-    
+                localStorage.setItem('friends', JSON.stringify(data.friends)); 
+                localStorage.setItem('description', JSON.stringify(data.description)); 
+                localStorage.setItem('gamertag', JSON.stringify(data.gamertag)); 
+                localStorage.setItem('age', JSON.stringify(data.age)); 
+                localStorage.setItem('email', JSON.stringify(data.email)); 
+                localStorage.setItem('tags', JSON.stringify(data.tags)); 
+                localStorage.setItem('userId', JSON.stringify(data.userId)); 
+
                 // Update local component state
                 setIsLoggedIn(true);
                 setToken(data.token);
@@ -62,6 +61,7 @@ export const AuthProvider = ({ children }) => {
                 setAge(data.age);
                 setEmail(data.email);
                 setTags(data.tags);
+                setUserId(data.userId);
 
                 return response;
             } else {
@@ -93,6 +93,7 @@ export const AuthProvider = ({ children }) => {
     const value = {
         isLoggedIn,
         user,
+        token,
         login,
         logout,
         friends,
@@ -103,6 +104,7 @@ export const AuthProvider = ({ children }) => {
         email,
         tags,
         setTags,
+        userId,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -83,4 +83,26 @@ export const heartBeat = async (token) => {
     }
 }
 
-// export const findMatch = (userId) => API.post('/match', { userId });
+export const updateProfilePic = async (token, file) => {
+    const formData = new FormData();
+    formData.append('profilePic', file); 
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/post-profile-pic`, {
+            method: 'POST',
+            headers: {
+                'authorization': `Bearer ${token}`,
+            },
+            body: formData,
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Profile picture uploaded:', data);
+        } else {
+            console.error('Error uploading profile picture');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}

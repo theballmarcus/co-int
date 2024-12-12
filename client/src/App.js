@@ -6,7 +6,7 @@ import Register from './pages/Register';
 import Login from './pages/Login'
 import Layout from './Layout';
 import DescribeUser from './pages/DescribeUser';
-
+import Profile from './pages/Profile';
 function App() {
     const { isLoggedIn } = useAuth(); 
     return (
@@ -18,7 +18,7 @@ function App() {
                     <Route path="/register" element={isLoggedIn ? <Navigate to="/" /> : <Register />} />
                     <Route path="/login" element={isLoggedIn ? <Navigate to="/" /> : <Login />} />
                     <Route path="/describe-user" element={isLoggedIn ? <DescribeUser /> : <Navigate to="/login" />} />
-                    
+                    <Route path="/profile" element={isLoggedIn ? <Profile /> : <Navigate to="/login" />} />
                 </Routes>
             </Layout>
         </Router>

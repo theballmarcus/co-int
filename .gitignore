@@ -129,3 +129,6 @@ dist
 .env.production.local
 .env.local
 */*.env
+
+# uploads directory
+uploads/

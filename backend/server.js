@@ -5,6 +5,34 @@ const bodyParser = require('body-parser');
 const { OpenAI, OpenAIApi } = require('openai');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+const path = require('path');
+const sharp = require('sharp');
+const fs = require('fs');
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/profile-pics/');  
+    },
+    filename: (req, file, cb) => {
+        const extname = path.extname(file.originalname).toLowerCase();
+        const token = req.headers.authorization?.split(' ')[1];
+
+        if (!token) {
+            return cb(new Error('Authorization token is required'), false);
+        }
+
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            if (err) {
+                return cb(new Error('Invalid token'), false);
+            }
+            const userId = decoded.userId;
+            cb(null, `${userId}${extname}`);
+        });
+    }
+});
+
+const upload = multer({ storage });
 
 // Custom imports
 const { User, flushCollection} = require('./mongo'); // Import User model from mongo.js
@@ -64,7 +92,7 @@ app.post('/describe-user', async (req, res) => {
             // const prompt = `Generate a list of 5-10 human-readable, descriptive tags based on the following player description. The tags should capture the player's characteristics, playstyle, and interests in a way that is easily understood. The output should be in a simple JSON list format. Example tags could be: ["strategic", "team player", "competitive", "FPS enthusiast", "casual gamer"].\n\nDescription: "${description}"\n\nOutput in following format:\n["tag1", "tag2", "tag3", "tag4", "tag5"]`;
             const prompt  = `"${description}"\n\nPlaystyle: Describe their gaming approach, e.g., serious, competitive, casual, or just messing around.\nGame Status: Indicate their experience or rank, e.g., high level, new player, beginner, veteran.\nPersonality: Highlight their interaction style, e.g., friendly, team-oriented, lone wolf, troll.\nDemographics: Include age or relevant identifiers if mentioned, e.g., teenager, adult gamer.\nUnique Traits: Add notable behaviors or preferences, e.g., strategic thinker, meme-lover, roleplayer.\nOutput the tags in the following format:\n["tag1", "tag2", "tag3", "tag4", "tag5"]\n\nIf details are missing, infer traits logically based on common gaming archetypes.`;
             const gptResponse = await openai.chat.completions.create({
-                model: 'gpt-4o-mini', // Use a valid model like 'gpt-4' instead of 'gpt-4o-mini'
+                model: 'gpt-4o-mini',
                 messages: [
                     {
                         role: 'system',
@@ -150,7 +178,8 @@ app.post('/login', async (req, res) => {
             gamertag,
             age,
             email,
-            tags
+            tags,
+            userId: user._id,
         });
     } catch (error) {
         console.error('Error logging in:', error);
@@ -196,5 +225,47 @@ setInterval(() => {
     console.log('Current online users:', Array.from(onlineUsers.keys()));
 }, 30 * 1000);
 
+app.post('/post-profile-pic', upload.single('profilePic'), async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
 
+    if (!token) {
+        return res.status(401).json({ message: 'Authorization token is required' });
+    }
+
+    if (!req.file) {
+        return res.status(400).json({ message: 'No file uploaded' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const userId = decoded.userId;
+        
+        const originalFilePath = `${userId}${path.extname(req.file.originalname).toLowerCase()}`;
+        const finalFilePath = path.join('uploads/profile-pics', `${userId}.jpg`);
+        await sharp(`uploads/profile-pics/${originalFilePath}`)
+            .jpeg({ quality: 90 })
+            .toFile(finalFilePath);
+
+        if (originalFilePath !== finalFilePath) {
+            fs.unlinkSync(`uploads/profile-pics/${originalFilePath}`);
+        }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        user.pictureUrl = originalFilePath;
+        await user.save();
+
+        res.status(200).json({ message: 'Profile picture uploaded successfully', profilePicture: originalFilePath });
+    } catch (error) {
+        console.error('Error uploading profile picture:', error);
+        res.status(500).json({ message: 'Error uploading profile picture', error: error.message });
+    }
+});
+
+app.get('/uploads/profile-pics/:filename', (req, res) => {
+    const { filename } = req.params
+    res.sendFile(path.join(__dirname, '../uploads/profile-pics', filename));
+})
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

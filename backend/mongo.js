@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-// MongoDB setup
 mongoose.connect(process.env.MONGO_URI, { 
     useNewUrlParser: true, 
     useUnifiedTopology: true 
@@ -77,9 +76,7 @@ async function ensureSampleUsers() {
 }
 
 async function flushCollection() {
-
   try {
-      // Delete all documents
       const result = await User.deleteMany({});
       console.log(`${result.deletedCount} documents were deleted.`);
   } catch (error) {
@@ -87,5 +84,4 @@ async function flushCollection() {
   }
 }
 
-// Export models and functions
 module.exports = { User, ensureSampleUsers, flushCollection};

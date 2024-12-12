@@ -20,11 +20,13 @@
     color: #b3b3b3;
     height: 660px;
 }
+
 .notification-divider {
     width: 100%;
     height: 10px;
     background-color: #b3b3b3;
 }
+
 .notifications {
     height: 480px;
 }
