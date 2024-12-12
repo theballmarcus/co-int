@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { registerUser } from '../api'; 
+import { Button } from '@mui/material';
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -78,27 +79,47 @@ const Register = () => {
                         className='register-email'
                     />
                 </div>
-                <div className="register-password-container">
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                        className='register-password'
-                    />
-                    <input
-                        type="password"
-                        name="confirm_password"
-                        placeholder="Confirm Password"
-                        value={formData.confirm_password}
-                        onChange={handleChange}
-                        required
-                        className='register-confirm-password'
-                    />
-                </div>
+                <div className='register-password-submit-container'>
+                    <div className="register-password-container">
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                            className='register-password'
+                        />
+                        <input
+                            type="password"
+                            name="confirm_password"
+                            placeholder="Confirm Password"
+                            value={formData.confirm_password}
+                            onChange={handleChange}
+                            required
+                            className='register-confirm-password'
+                        />
+                    </div>
+                    <Button
+                            type="submit"
+                            sx={{
+                                marginTop: '20px',
+                                padding: '10px 20px',
+                                fontSize: '18px',
+                                backgroundColor: '#84E291',
+                                color: "#646464",
+                                width: '350px',
+                                height: '70px',
+                                '&:hover': {
+                                    backgroundColor: 'darkgreen',
+                                },
+                                marginLeft: '450px',
 
+                            }}
+                        >
+                        Submit➤➤➤
+                    </Button>
+                </div>
                 <button type="submit" style={{
                     display: 'none'
                 }}>Register</button>

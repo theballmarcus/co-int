@@ -2,31 +2,100 @@ import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { useAuth } from '../AuthProvider';
 import { Link } from 'react-router-dom';
+import '../css/Homepage.css';
+
+const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+};
+
 
 const Home = () => {
-    const { isLoggedIn, gamertag } = useAuth();
+    const { isLoggedIn, gamertag, tags } = useAuth();
+
+    // On tags load, console log
+    React.useEffect(() => {
+        console.log('Tags:', tags);
+    }, [tags]);
 
     return (
-        <Box
-            // sx={{
-            //     display: 'flex',
-            //     flexDirection: 'column',
-            //     alignItems: 'center',
-            //     justifyContent: 'center',
-            //     padding: '20px',
-            // }}
-        >
+        <Box>
             {isLoggedIn ? (
                 <>
-                    <Typography variant="h4" sx={{ marginBottom: '20px' }}>
-                        Home
-                    </Typography>
-                    <Typography variant="body1" sx={{ marginBottom: '20px', color: "#FFF" }}>
-                        Welcome to the home page, you are logged in as {gamertag}.
-                    </Typography>
-                    <nav className="login_content">
+                    <div className='page-content'>
+                        <div className='info-container'>
+                            <Typography variant="h4" className="primary-heading">
+                                Common Interest
+                            </Typography>
+                            <div className='find-match-container'>
+                                <Typography variant="body1" sx={{ 
+                                    marginBottom: '20px', 
+                                    color: "#b3b3b3",
+                                    fontSize: '30px',
+                                    }}>
+                                    Find match
+                                </Typography>
+                                <Button className='find-friends-button' sx={{
+                                    backgroundColor: '#46B1E1',
+                                    color: '#646464',
+                                    borderRadius: '10px',
+                                    width: '200px',
+                                    height: '50px',
+                                    fontSize: '20px',
+                                    marginLeft: '40px',
+                                }}>Find Friends</Button>
+                            </div>
 
-                    </nav>
+                            <div className="user-tags-container">
+                                <Typography variant="body1" sx={{ 
+                                    marginTop: '20px', 
+                                    color: "#b3b3b3",
+                                    fontSize: '30px',
+                                }}>
+                                    {gamertag}'s Tags
+                                </Typography>
+                                <div className="user-tags">
+                                    {tags.map((tag, index) => (
+                                        <div 
+                                            className="tag" 
+                                            key={index} 
+                                            style={{
+                                                backgroundColor: getRandomColor(),
+                                                padding: '10px 20px',
+                                                margin: '5px',
+                                                borderRadius: '15px',
+                                                display: 'inline-block',
+                                            }}
+                                        >
+                                            <h1 style={{ margin: 0, fontSize: '18px' }}>{tag}</h1>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                        <div className='notifications-container'>
+                            <Typography variant="h4" sx={{ 
+                                marginBottom: '20px',
+                                marginTop: '20px',
+                                }}>
+                                Notifications
+                            </Typography>
+                            <div className='notification-divider'></div>
+                            <div className='notifications'></div>
+                            <div className='notification-divider'></div>
+                            
+                            <Typography variant="h4" sx={{ 
+                                marginBottom: '20px',
+                                marginTop: '20px',
+                                }}>
+                                n new messages.
+                            </Typography>
+                            </div>
+                    </div>
                 </>
             ) : (
                 <>

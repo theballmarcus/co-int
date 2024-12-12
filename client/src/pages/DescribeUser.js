@@ -4,7 +4,7 @@ import { TextField, Button } from '@mui/material';
 import { useAuth } from '../AuthProvider';
 
 const DescribeUser = () => {
-    const { description, setDescription } = useAuth();
+    const { description, setDescription, tags, setTags } = useAuth();
     const [ curDescription, setCurDescription ] = useState(description);
 
 
@@ -17,7 +17,10 @@ const DescribeUser = () => {
         try {
             const response = await describeUser(curDescription);
             setDescription(curDescription);
-            console.log(response);
+            setTags(response.tags);
+            localStorage.setItem('description', JSON.stringify(curDescription));
+            console.log('Tags:', response.tags);
+            localStorage.setItem('tags', JSON.stringify(response.tags));
         } catch (error) {
             console.error(error);
         }

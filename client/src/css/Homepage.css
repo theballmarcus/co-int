@@ -1,0 +1,71 @@
+.page-content {
+    display: flex;
+    flex-direction: row;
+    /* align-items: center; */
+    justify-content: space-between;
+    height: 100vh;
+    width: 100%;
+    padding-top: 100px;
+}
+
+.notifications-container {
+    position: relative; /* Ensures the positioning works as expected */
+    right: 200px;
+    display: flex;
+    background-color: #404040;
+    flex-direction: column;
+    width: 450px;
+    align-items: center;
+    border-radius: 25px;
+    color: #b3b3b3;
+    height: 660px;
+}
+.notification-divider {
+    width: 100%;
+    height: 10px;
+    background-color: #b3b3b3;
+}
+.notifications {
+    height: 480px;
+}
+
+.info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+    height: 100%;
+    margin-left: 75px;
+}
+
+.info-container .primary-heading {
+    font-weight: 1000; /* Thick text */
+    font-size: 5rem; /* Large size */
+    line-height: 1.2em; /* Adjust line height */
+    letter-spacing: 0.05em; /* Slight letter spacing */
+    margin-bottom: 20px;
+    color: #FFFFFF;
+}
+
+.find-match-container {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    width: 750px;
+    height: 70px;
+}
+
+.find-friends-button {
+    margin-left: 100px;
+    color: #FFFFFF; /* White text for contrast */
+    border: none;
+    padding: 10px 20px; /* Adjust padding as needed */
+    font-size: 1rem; /* Adjust font size */
+    border-radius: 5px; /* Slightly rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+.find-friends-button:hover {
+    background-color: #3A9BCC; /* Darker shade on hover */
+}

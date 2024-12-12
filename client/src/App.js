@@ -18,6 +18,7 @@ function App() {
                     <Route path="/register" element={isLoggedIn ? <Navigate to="/" /> : <Register />} />
                     <Route path="/login" element={isLoggedIn ? <Navigate to="/" /> : <Login />} />
                     <Route path="/describe-user" element={isLoggedIn ? <DescribeUser /> : <Navigate to="/login" />} />
+                    
                 </Routes>
             </Layout>
         </Router>

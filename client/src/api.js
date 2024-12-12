@@ -1,8 +1,5 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: 'http://localhost:5000' });
-
-
 const API_BASE_URL = 'http://localhost:5000'; 
 
 export const registerUser = async (userData) => {
@@ -68,5 +65,22 @@ export const describeUser = async (description) => {
         throw error;
     }
 };
+
+export const heartBeat = async (token) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/heartbeat`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${token}`,
+            },
+        });
+        const data = response.json()
+        console.log('Heartbeat response:', data)
+
+    } catch (error) {
+        console.error('Heartbeat error:', error)
+    }
+}
 
 // export const findMatch = (userId) => API.post('/match', { userId });
