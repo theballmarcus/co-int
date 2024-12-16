@@ -57,8 +57,11 @@ export const AuthProvider = ({ children }) => {
                 setIsLoggedIn(true);
                 setToken(data.token);
                 setFriends(data.friends);
-                if(data.description != null || data.description !== undefined)
+                if(data.description != null || data.description !== undefined) {
                     setDescription(data.description);
+                    console.log('Description:', data.description);
+                }
+
                 setGamertag(data.gamertag);
                 setAge(data.age);
                 setEmail(data.email);
