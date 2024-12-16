@@ -35,7 +35,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Custom imports
-const { User, flushCollection} = require('./mongo'); // Import User model from mongo.js
+const { User, Message, Notification, flushCollection} = require('./mongo'); 
 require('dotenv').config();
 
 let openai;
@@ -46,7 +46,7 @@ if(process.env.OPENAI_ENABLED === 'true') {
 }
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.SERVER_PORT || 5000;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -168,6 +168,7 @@ app.post('/login', async (req, res) => {
         const gamertag = user.gamertag;
         const age = user.age;
         const tags = user.tags;
+        const discord = user.discord;
 
         res.status(200).json({ 
             message: 'Login successful', 
@@ -179,6 +180,7 @@ app.post('/login', async (req, res) => {
             age,
             email,
             tags,
+            discord,
             userId: user._id,
         });
     } catch (error) {
@@ -266,6 +268,201 @@ app.post('/post-profile-pic', upload.single('profilePic'), async (req, res) => {
 
 app.get('/uploads/profile-pics/:filename', (req, res) => {
     const { filename } = req.params
+    if (!fs.existsSync(path.join(__dirname, '../uploads/profile-pics', filename))) {
+    }
     res.sendFile(path.join(__dirname, '../uploads/profile-pics', filename));
 })
+
+app.post('/find-match', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+        return res.status(401).json({ message: 'Authorization token is required' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const userId = decoded.userId;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const userTags = user.tags;         
+        const allUsers = await User.find( { 
+            gamertag : { 
+                $ne: user.gamertag,
+            }, 
+            tags: { 
+                $exists: true, 
+                $not: { $size: 0 }
+            }
+        });
+        const prompt = `Find 5 matches for a player with the following tags: "${userTags.join(', ')}". The match should have similar interests and playstyles. Output the userId of the matched player. If not enough players and tags are present, then you're allowed to write the same one multiple times but dont mention it and try to avoid it. Here is the list of all players and their tags:\n\n ${allUsers.map(u => `${u._id}: ${u.tags.join(', ')}`).join('\n ')}\n\nOutput the users in the following format, do not write anything besides this:\n["userId1", "userId2", "userId3", "userId4", "userId5"]`;
+        console.log('Prompt:', prompt); 
+        const gptResponse = await openai.chat.completions.create({
+            model: 'gpt-4o-mini',
+            messages: [
+                {
+                    role: 'system',
+                    content: 'You are a helpful assistant that finds a match for players based on their tags.'
+                },
+                {
+                    role: 'user',
+                    content: prompt
+                }
+            ],
+            max_tokens: 100,
+        });
+        console.log('GPT Response:', gptResponse.choices[0].message.content);
+        const rawMatch = gptResponse.choices[0].message.content.trim();
+
+        const match = JSON.parse(rawMatch);
+        if (!Array.isArray(match)) {
+            throw new Error('Invalid response from OpenAI');
+        }
+        res.status(200).json({ match });
+
+    } catch (error) {
+        console.error('Error finding match:', error);
+        res.status(500).json({ message: 'Error finding match', error: error.message });
+    }
+});
+
+app.get('/get-user/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({ message: 'User found', tags: user.tags, gamertag: user.gamertag, age: user.age, userId: user._id });
+
+    } catch (error) {
+        console.error('Error getting user:', error);
+        res.status(500).json({ message: 'Error getting user', error: error.message });
+    }
+});
+
+app.post('/add-friend', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    const { friendId } = req.body;
+    if (!token) {
+        return res.status(401).json({ message: 'Authorization token is required' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const userId = decoded.userId;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const friend = await User.findById(friendId);
+        if (!friend) {
+            return res.status(404).json({ message: 'Friend not found' });
+        }
+
+        const notification = new Notification({
+            user: friendId,
+            content: `${user.gamertag} added you as a friend`,
+        });
+
+        await notification.save();
+
+        if (user.friends.includes(friendId)) {
+            return res.status(409).json({ message: 'Friend already added' });
+        }
+        friend.friends.push(userId);
+        await friend.save();
+        user.friends.push(friendId);
+        await user.save();
+        
+        res.status(200).json({ message: 'Friend added successfully' });
+
+    } catch (error) {
+        console.error('Error adding friend:', error);
+        res.status(500).json({ message: 'Error adding friend', error: error.message });
+    }
+});
+
+app.get('/get-friends', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+        return res.status(401).json({ message: 'Authorization token is required' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const userId = decoded.userId;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const friends = await User.find({ _id: { $in: user.friends } });
+        const onlineFriends = friends.map(friend => {
+            return {
+                userId: friend._id,
+                gamertag: friend.gamertag,
+                tags: friend.tags,
+                discord: friend.discord,
+                online: onlineUsers.has(friend._id),
+            };
+        });
+
+        res.status(200).json({ friends: onlineFriends });
+
+    } catch (error) {
+        console.error('Error getting friends:', error);
+        res.status(500).json({ message: 'Error getting friends', error: error.message });
+    }
+});
+
+app.get('/get-notifications', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+        return res.status(401).json({ message: 'Authorization token is required' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const userId = decoded.userId;
+        const notifications = await Notification.find({ user: userId }).sort({ createdAt: -1 }).limit(5);
+        await Notification.updateMany({ user: userId }, { seen: true });
+
+        res.status(200).json({ notifications });
+
+    } catch (error) {
+        console.error('Error getting notifications:', error);
+        res.status(500).json({ message: 'Error getting notifications', error: error.message });
+    }
+});
+
+app.post('/set-discord-tag', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    const { discordTag } = req.body;
+    if (!token) {
+        return res.status(401).json({ message: 'Authorization token is required' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const userId = decoded.userId;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        user.discord = discordTag;
+        await user.save();
+
+        res.status(200).json({ message: 'Discord tag set successfully' });
+
+    } catch (error) {
+        console.error('Error setting discord tag:', error);
+        res.status(500).json({ message: 'Error setting discord tag', error: error.message });
+    }
+});
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

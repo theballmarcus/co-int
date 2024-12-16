@@ -17,6 +17,8 @@ const Layout = ({ children }) => {
                     </> : <>
                         <Link to="/describe-user">Describe User</Link>
                         <Link to="/profile">Profile</Link>
+                        <Link to="/find-friends">Find Friends</Link>
+                        <Link to="/friends">Friends</Link>
                     </>}
                 </nav>
             </div>

@@ -3,8 +3,9 @@ import { Box, Typography, Button } from '@mui/material';
 import { useAuth } from '../AuthProvider';
 import { Link } from 'react-router-dom';
 import '../css/Homepage.css';
+import NotificationBox from './components/NotificationBox';
 
-const getRandomColor = () => {
+export const getRandomColor = () => {
     const letters = '0123456789ABCDEF';
     let color = '#';
     for (let i = 0; i < 6; i++) {
@@ -13,14 +14,8 @@ const getRandomColor = () => {
     return color;
 };
 
-
 const Home = () => {
-    const { isLoggedIn, gamertag, tags } = useAuth();
-
-    // On tags load, console log
-    React.useEffect(() => {
-        console.log('Tags:', tags);
-    }, [tags]);
+    const { isLoggedIn, gamertag, tags, token } = useAuth();
 
     return (
         <Box>
@@ -33,21 +28,23 @@ const Home = () => {
                             </Typography>
                             <div className='find-match-container'>
                                 <Typography variant="body1" sx={{ 
-                                    marginBottom: '20px', 
-                                    color: "#b3b3b3",
-                                    fontSize: '30px',
+                                        marginBottom: '20px', 
+                                        color: "#b3b3b3",
+                                        fontSize: '30px',
                                     }}>
-                                    Find match
+                                    Find matches
                                 </Typography>
-                                <Button className='find-friends-button' sx={{
-                                    backgroundColor: '#46B1E1',
-                                    color: '#646464',
-                                    borderRadius: '10px',
-                                    width: '200px',
-                                    height: '50px',
-                                    fontSize: '20px',
-                                    marginLeft: '40px',
-                                }}>Find Friends</Button>
+                                <Link to="/find-friends">
+                                    <Button className='find-friends-button' sx={{
+                                        backgroundColor: '#46B1E1',
+                                        color: '#646464',
+                                        borderRadius: '10px',
+                                        width: '200px',
+                                        height: '50px',
+                                        fontSize: '20px',
+                                        marginLeft: '40px',
+                                    }}>Find Friends</Button>
+                                </Link>
                             </div>
 
                             <div className="user-tags-container">
@@ -77,24 +74,7 @@ const Home = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='notifications-container'>
-                            <Typography variant="h4" sx={{ 
-                                marginBottom: '20px',
-                                marginTop: '20px',
-                                }}>
-                                Notifications
-                            </Typography>
-                            <div className='notification-divider'></div>
-                            <div className='notifications'></div>
-                            <div className='notification-divider'></div>
-                            
-                            <Typography variant="h4" sx={{ 
-                                marginBottom: '20px',
-                                marginTop: '20px',
-                                }}>
-                                n new messages.
-                            </Typography>
-                            </div>
+                        <NotificationBox token={token} />
                     </div>
                 </>
             ) : (
@@ -104,26 +84,26 @@ const Home = () => {
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
-                            justifyContent: 'center', // Height should be 100vh - header
-                            height: 'calc(100vh - 400px)', // Subtract the height of the header
+                            justifyContent: 'center', 
+                            height: 'calc(100vh - 400px)',
                             width: '100%',
-                            position: 'relative', // For positioning the buttons absolutely inside the container
+                            position: 'relative',
                             padding: '20px 0',
                         }}
                     >
                         <Link
                             to="/register"
-                            style={{ textDecoration: 'none', position: 'absolute', left: '230px' }} // Remove the underline from Link and position the button
+                            style={{ textDecoration: 'none', position: 'absolute', left: '230px' }} 
                         >
                             <Button
                                 sx={{
                                     backgroundColor: '#404040',
                                     color: '#646464',
-                                    borderRadius: '10px', // Slightly less rounded corners
+                                    borderRadius: '10px', 
                                     position: 'absolute',
-                                    width: '500px', // Set the width of the button
-                                    height: '200px', // Set the height of the button
-                                    padding: '0', // Remove default padding
+                                    width: '500px', 
+                                    height: '200px', 
+                                    padding: '0',
                                     fontSize: '30px',
                                 }}
                             >

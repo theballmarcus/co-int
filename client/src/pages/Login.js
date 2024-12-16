@@ -68,16 +68,16 @@ const Login = () => {
                         width: '700px',
 
                         '& .MuiInputBase-root': {
-                            color: '#ffffff',  // Text color inside the field
+                            color: '#ffffff',  
                         },
                         '& .MuiInputLabel-root': {
-                            color: '#ffffff',  // Label color
+                            color: '#ffffff',  
                         },
                         '& .MuiOutlinedInput-root': {
-                            borderColor: '#646464',  // Border color when the field is not focused
+                            borderColor: '#646464',  
                         },
                         '& .MuiOutlinedInput-root.Mui-focused': {
-                            borderColor: '#ffffff',  // Border color when the field is focused
+                            borderColor: '#ffffff', 
                         }
                      }}
                 />
@@ -104,40 +104,24 @@ const Login = () => {
                         width: '700px',
 
                         '& .MuiInputBase-root': {
-                            color: '#ffffff',  // Text color inside the field
+                            color: '#ffffff', 
                             
                         },
                         '& .MuiInputLabel-root': {
-                            color: '#ffffff',  // Label color
+                            color: '#ffffff', 
 
                         
                         },
                         '& .MuiOutlinedInput-root': {
-                            borderColor: '#646464',  // Border color when the field is not focused
+                            borderColor: '#646464',
 
                         },
                         '& .MuiOutlinedInput-root.Mui-focused': {
-                            borderColor: '#ffffff',  // Border color when the field is focused
+                            borderColor: '#ffffff',  
                         }
                     }}                
                 />
                 <button type="submit" style={{ display: 'none' }}>Submit</button>
-                {/* <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        sx={{
-                            backgroundColor: '#404040',
-                            color: '#646464',
-                            borderRadius: '20px',
-                            '&:hover': {
-                                backgroundColor: '#333333',
-                            },
-                        }}
-                    >
-                        Login
-                    </Button>
-                </Box> */}
             </form>
 
             {responseMessage && <p style={{ color: 'green' }}>{responseMessage}</p>}

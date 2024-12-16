@@ -33,7 +33,6 @@ const DescribeUser = () => {
             alignItems: 'center',
             height: '100vh',
         }}>
-            {/* Text big textfield */}
             <form onSubmit={handleSubmit}
                 style={{
                     display: 'flex',
@@ -83,7 +82,7 @@ const DescribeUser = () => {
                         backgroundColor: '#404040',
                         textAlign: 'center',
                         verticalAlign: 'middle',
-                        whiteSpace: 'pre-line', // Preserve newlines in placeholder
+                        whiteSpace: 'pre-line', 
                         color: 'white',
                         border: 'none',
                         borderRadius: '20px',

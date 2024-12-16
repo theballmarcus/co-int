@@ -23,7 +23,8 @@ export const AuthProvider = ({ children }) => {
         const age = localStorage.getItem('age');
         const email = localStorage.getItem('email');
         const tags = localStorage.getItem('tags');
-    
+        const userId = localStorage.getItem('userId');
+        
         if (token) {
             setIsLoggedIn(true);
             setToken(token);
@@ -52,7 +53,6 @@ export const AuthProvider = ({ children }) => {
                 localStorage.setItem('tags', JSON.stringify(data.tags)); 
                 localStorage.setItem('userId', JSON.stringify(data.userId)); 
 
-                // Update local component state
                 setIsLoggedIn(true);
                 setToken(data.token);
                 setFriends(data.friends);

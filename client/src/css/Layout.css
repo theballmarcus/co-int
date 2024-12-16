@@ -1,7 +1,7 @@
 .layout {
     display: flex;
-    flex-direction: column; /* Stack elements vertically */
-    height: 100vh; /* Ensure it takes up the full height */
+    flex-direction: column; 
+    height: 100vh; 
 }
 
 .topbar {
@@ -10,7 +10,7 @@
     height: 160px;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Position logo on the left and other content on the right */
+    justify-content: space-between; 
     width: 100%; 
     flex-direction: row;
 }
@@ -54,14 +54,14 @@
     width: 140px;
     height: 140px;
     align-items: center;
-    object-fit: contain; /* Ensures the logo maintains aspect ratio */
+    object-fit: contain; 
 }
 
 .profile {
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    object-fit: cover; /* Ensures the image maintains aspect ratio */
+    object-fit: cover; 
 }
 
 .sidebar a:hover {
@@ -82,16 +82,16 @@
     background-color: #404040;
     color: #646464;
     border-radius: 20px;
-    width: 30%; /* Buttons take up 30% of the width */
-    padding: 10px 0; /* Adjust padding for better appearance */
-    font-size: 16px; /* Optional, adjust text size */
+    width: 30%; 
+    padding: 10px 0; 
+    font-size: 16px; 
 }
 
 .button-container {
     width: 100%;
     display: flex;
-    justify-content: space-between; /* Space the buttons evenly */
-    padding: 20px 50px; /* Ensure buttons are placed correctly */
+    justify-content: space-between; 
+    padding: 20px 50px; 
 }
 
 .register-info-container {
@@ -145,19 +145,16 @@
     width: 100%;
 }
 
-/* Remove spinboxes */
 input[type=number] {
-    -moz-appearance:textfield; /* Firefox */
+    -moz-appearance:textfield;
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
     -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+    margin: 0;
 }
 
 .register-password-submit-container {
-    /* Place things default right to left, top to buttom*/
     display: flex;
     flex-direction: column;
     align-items: start;

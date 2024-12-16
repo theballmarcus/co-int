@@ -15,24 +15,31 @@ const userSchema = new mongoose.Schema({
     gamertag: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     age: { type: Number, required: true },
-    password: { type: String, required: true },          // Store hashed passwords
-    pictureUrl: { type: String },                        // URL for the user's profile picture
-    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], // Friend references
-    toxicity: { type: Number, default: 0 },             // Stored toxicity level
-    tags: { type: [String], default: [] },              // List of tags for the user
-    description: { type: String },                      // User description
+    password: { type: String, required: true },
+    pictureUrl: { type: String },
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], 
+    toxicity: { type: Number, default: 0 },
+    tags: { type: [String], default: [] },
+    discord: { type: String, required: false },
+    description: { type: String },
 }, { timestamps: true });
 const User = mongoose.model('User', userSchema);
 
 const messageSchema = new mongoose.Schema({
-  sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Sender of the message
-  receiver: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Receiver of the message
-  content: { type: String, required: true }, // The content of the message
-  sentAt: { type: Date, default: Date.now }, // Timestamp of when the message was sent
-  seen: { type: Boolean, default: false }, // Whether the user has seen the message
+  sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  receiver: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  content: { type: String, required: true }, 
+  sentAt: { type: Date, default: Date.now }, 
+  seen: { type: Boolean, default: false }, 
 }, { timestamps: true });
-
 const Message = mongoose.model('Message', messageSchema);
+
+const notificationSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, 
+  content: { type: String, required: true }, 
+  seen: { type: Boolean, default: false },
+}, { timestamps: true });
+const Notification = mongoose.model('Notification', notificationSchema);
 
 async function ensureSampleUsers() {
     const sampleUsers = [
@@ -41,7 +48,7 @@ async function ensureSampleUsers() {
         email: 'player1@gmail.com',
         age: 25,
         password: 'password1',
-        pictureUrl: 'https://example.com/player1.jpg',
+        pictureUrl: '',
         friends: [],
         toxicity: 0,
         tags: ['competitive', 'FPS', 'team player'],
@@ -51,7 +58,7 @@ async function ensureSampleUsers() {
         email: 'player2@gmail.com',
         age: 30,
         password: 'password2',
-        pictureUrl: 'https://example.com/player2.jpg',
+        pictureUrl: '',
         friends: [],
         toxicity: 0,
         tags: ['casual', 'sandbox', 'builder'],
@@ -60,13 +67,11 @@ async function ensureSampleUsers() {
 
     try {
         for (const user of sampleUsers) {
-            // Use `findOneAndUpdate` with `upsert: true` to add the user if it doesn't exist
             await User.findOneAndUpdate(
-            { gamertag: user.gamertag }, // Search condition
-            user,               // Data to insert if not found
-            { upsert: true, new: true } // Upsert option: create if not found
+            { gamertag: user.gamertag },
+            user,
+            { upsert: true, new: true } 
             );
-            console.log(`Ensured user exists: ${user.gamertag}`);
         }
         console.log('All sample users ensured in the database');
     }
@@ -78,10 +83,9 @@ async function ensureSampleUsers() {
 async function flushCollection() {
   try {
       const result = await User.deleteMany({});
-      console.log(`${result.deletedCount} documents were deleted.`);
   } catch (error) {
       console.error('Error flushing collection:', error);
   }
 }
 
-module.exports = { User, ensureSampleUsers, flushCollection};
+module.exports = { User, Message, Notification, ensureSampleUsers, flushCollection};

@@ -1,29 +1,88 @@
 import React from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, TextField } from '@mui/material';
 import { useAuth } from '../AuthProvider';
 import { Link } from 'react-router-dom';
 import '../css/Profile.css';
-import { updateProfilePic } from '../api';
+import { updateProfilePic, postDiscordTag } from '../api';
+import { getRandomColor } from './Home';
+import NotificationBox from './components/NotificationBox';
 
-const getRandomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
+const DiscordTag = () => {
+    const [discordTag, setDiscordTag] = React.useState('');
+    const { token } = useAuth();
+    const handleSave = () => {
+        postDiscordTag(token, discordTag);
     }
-    return color;
-};
 
+    return (
+        <Box sx={{ padding: '10px', backgroundColor: '#404040', borderRadius: '8px', boxShadow: 2 }}>
+            <Typography 
+                variant="h4" 
+                sx={{ 
+                    marginBottom: '20px', 
+                    textAlign: 'center', 
+                    fontWeight: '600',
+                    color: '#fff',
+                }}
+            >
+                Discord Tag
+            </Typography>
+            <Box 
+                sx={{ 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    gap: '20px', 
+                    alignItems: 'center' 
+                }}
+            >
+                <TextField
+                    variant="outlined"
+                    placeholder="Enter Discord Tag"
+                    fullWidth
+                    sx={{
+                        maxWidth: '400px',
+                        backgroundColor: '#fff',
+                        borderRadius: '8px',
+                        '& .MuiInputBase-root': {
+                            borderRadius: '8px',
+                            padding: '10px',
+                        },
+                    }}
+                    value={discordTag}
+                    onChange={(e) => setDiscordTag(e.target.value)}
+                />
+                <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                        width: '150px',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        fontWeight: 'bold',
+                        boxShadow: 2,
+                        '&:hover': {
+                            backgroundColor: '#0069d9', 
+                        }
+                    }}
+                    onClick={handleSave}
+                >
+                    Save
+                </Button>
+            </Box>
+        </Box>
+    );
+};
 
 const Profile = () => {
     const { isLoggedIn, gamertag, tags, email, token, userId } = useAuth();
     const [isEditing, setIsEditing] = React.useState(false);
     const [profilePictureUrl, setProfilePicture] = React.useState(null);
 
-    // Get profile picture from the server
     React.useEffect(() => {
         if (userId) {
             setProfilePicture(`http://localhost:5000/uploads/profile-pics/${userId}.jpg`);
+        } else {
+            console.log('User ID not found');
         }
     }, [userId]);
     const defaultProfilePic = "https://via.placeholder.com/150?text=No+Image";
@@ -57,41 +116,54 @@ const Profile = () => {
                 <>
                     <div className="profile-page-content">
                         <div className="profile-info-container">
-                            <div className="profile-picture-container">
-                                <img 
-                                    src={profilePictureUrl || defaultProfilePic} 
-                                    alt="Profile"
-                                    className="profile-picture"
-                                    onClick={handleProfilePicClick}
-                                />
+                            <div className='profile-heading-container'>
+                                <div className="profile-picture-container">
+                                    <img 
+                                        src={profilePictureUrl || defaultProfilePic} 
+                                        alt="Profile"
+                                        className="profile-profile-picture"
+                                        onClick={handleProfilePicClick}
+                                    />
+                                </div>
+                                <div className="profile-text-container">
+                                    <p className="profile-heading">
+                                        {gamertag}'s profile
+                                    </p>
+                                    <p className="profile-email">
+                                        {email}
+                                    </p>
+                                </div>
                             </div>
-                            <div className="profile-text-container">
-                                <p className="profile-heading">
-                                    {gamertag}'s profile
-                                </p>
-                                <p className="profile-email">
-                                    {email}
-                                </p>
+                            <div className='profile-tags-container'>
+                                <Typography variant="h4" sx={{ 
+                                    marginBottom: '20px',
+                                    marginTop: '20px',
+                                    }}>
+                                    {gamertag}'s Tags
+                                </Typography>
+                                <div className='profile-tags'>
+                                    {tags.map((tag, index) => (
+                                        <div 
+                                            className='tag' 
+                                            key={index} 
+                                            style={{
+                                                backgroundColor: getRandomColor(),
+                                                padding: '10px 20px',
+                                                margin: '5px',
+                                                borderRadius: '15px',
+                                                display: 'inline-block',
+                                            }}
+                                        >
+                                            <h1 style={{ margin: 0, fontSize: '18px' }}>{tag}</h1>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div style={{marginLeft: '50px', marginTop: '20px'}} >
+                                <DiscordTag />
                             </div>
                         </div>
-                        <div className='description-container'>
-                            <Typography variant="h4" sx={{ 
-                                marginBottom: '20px',
-                                marginTop: '20px',
-                                }}>
-                                Description
-                            </Typography>
-                            <div className='description-divider'></div>
-                            <div className='description'></div>
-                            <div className='description-divider'></div>
-                            
-                            <Typography variant="h4" sx={{ 
-                                marginBottom: '20px',
-                                marginTop: '20px',
-                                }}>
-                                n new messages.
-                            </Typography>
-                        </div>
+                        <NotificationBox token={token} />
                     </div>
                 </>
             ) : (
@@ -101,26 +173,26 @@ const Profile = () => {
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
-                            justifyContent: 'center', // Height should be 100vh - header
-                            height: 'calc(100vh - 400px)', // Subtract the height of the header
+                            justifyContent: 'center', 
+                            height: 'calc(100vh - 400px)', 
                             width: '100%',
-                            position: 'relative', // For positioning the buttons absolutely inside the container
+                            position: 'relative', 
                             padding: '20px 0',
                         }}
                     >
                         <Link
                             to="/register"
-                            style={{ textDecoration: 'none', position: 'absolute', left: '230px' }} // Remove the underline from Link and position the button
+                            style={{ textDecoration: 'none', position: 'absolute', left: '230px' }}
                         >
                             <Button
                                 sx={{
                                     backgroundColor: '#404040',
                                     color: '#646464',
-                                    borderRadius: '10px', // Slightly less rounded corners
+                                    borderRadius: '10px', 
                                     position: 'absolute',
-                                    width: '500px', // Set the width of the button
-                                    height: '200px', // Set the height of the button
-                                    padding: '0', // Remove default padding
+                                    width: '500px', 
+                                    height: '200px', 
+                                    padding: '0',
                                     fontSize: '30px',
                                 }}
                             >
