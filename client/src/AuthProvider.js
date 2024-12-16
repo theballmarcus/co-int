@@ -46,7 +46,8 @@ export const AuthProvider = ({ children }) => {
                 const data = response;
                 localStorage.setItem('authToken', data.token);
                 localStorage.setItem('friends', JSON.stringify(data.friends)); 
-                localStorage.setItem('description', JSON.stringify(data.description)); 
+                if(data.description != null || data.description !== undefined)
+                    localStorage.setItem('description', JSON.stringify(data.description)); 
                 localStorage.setItem('gamertag', JSON.stringify(data.gamertag)); 
                 localStorage.setItem('age', JSON.stringify(data.age)); 
                 localStorage.setItem('email', JSON.stringify(data.email)); 
@@ -56,7 +57,8 @@ export const AuthProvider = ({ children }) => {
                 setIsLoggedIn(true);
                 setToken(data.token);
                 setFriends(data.friends);
-                setDescription(data.description);
+                if(data.description != null || data.description !== undefined)
+                    setDescription(data.description);
                 setGamertag(data.gamertag);
                 setAge(data.age);
                 setEmail(data.email);
