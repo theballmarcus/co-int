@@ -5,8 +5,8 @@ import { useAuth } from '../AuthProvider';
 
 const DescribeUser = () => {
     const { description, setDescription, tags, setTags } = useAuth();
-    const [ curDescription, setCurDescription ] = useState(description);
 
+    const [ curDescription, setCurDescription ] = useState(description);
 
     const handleChange = (e) => {
         setCurDescription(e.target.value);
@@ -41,7 +41,7 @@ const DescribeUser = () => {
                     justifyContent: 'center',
                 }}
             >
-                {curDescription === '' && (
+                {(curDescription === null || curDescription === '') && (
                     <div style={{
                         color: 'white',
                         fontSize: '35px',
