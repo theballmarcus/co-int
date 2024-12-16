@@ -88,7 +88,7 @@ const Friends = () => {
                                                 }}>
                                                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                                         <img 
-                                                            src={`http://localhost:5000/uploads/profile-pics/${friend.userId}.jpg`}
+                                                            src={`${process.env.REACT_APP_API_BASE_URL}/uploads/profile-pics/${friend.userId}.jpg`}
                                                             alt={`${friend.gamertag}'s profile`} 
                                                             style={{ 
                                                                 width: '50px', 

@@ -80,7 +80,7 @@ const Profile = () => {
 
     React.useEffect(() => {
         if (userId) {
-            setProfilePicture(`http://localhost:5000/uploads/profile-pics/${userId}.jpg`);
+            setProfilePicture(`${process.env.REACT_APP_API_BASE_URL}/uploads/profile-pics/${userId}.jpg`);
         } else {
             console.log('User ID not found');
         }

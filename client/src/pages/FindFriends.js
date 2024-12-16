@@ -84,7 +84,7 @@ const FindFriends = () => {
                                         <div className='found-match' key={index}>
                                             <div className="match-content">
                                                 <img 
-                                                    src={`http://localhost:5000/uploads/profile-pics/${match.userId}.jpg`} 
+                                                    src={`${process.env.REACT_APP_API_BASE_URL}/uploads/profile-pics/${match.userId}.jpg`}
                                                     alt="Profile"
                                                     className="profile-picture"
                                                 />
