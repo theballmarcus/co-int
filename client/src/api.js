@@ -201,25 +201,32 @@ export const getFriends = async (token) => {
     }
 }
 
+var hasFetched = false;
+var data;
 export const getNotifications = async (token) => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/get-notifications`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': `Bearer ${token}`,
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
+    if(!hasFetched) {
+        hasFetched = true;
+        try {
+            const response = await fetch(`${API_BASE_URL}/get-notifications`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': `Bearer ${token}`,
+                },
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+            data = await response.json()
+            return await response.json();
         }
-
-        return await response.json();
-    }
-    catch (error) {
-        console.error('Error getting notifications:', error);
-        throw error;
+        catch (error) {
+            console.error('Error getting notifications:', error);
+            throw error;
+        }
+    } else {
+        return data
     }
 }
 

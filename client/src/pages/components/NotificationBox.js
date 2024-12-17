@@ -18,10 +18,8 @@ const NotificationBox = ({ token }) => {
                     try {
                         const data = await getNotifications(token);
                         setNotifications(data.notifications);
-                        // setHasFetched(true);
                     } catch (err) {
                         setError('Failed to load notifications');
-                        // setHasFetched(true);
                     }
                 }
 
