@@ -3,6 +3,7 @@ import { Typography } from '@mui/material';
 import { getNotifications } from '../../api';
 
 const NotificationBox = ({ token }) => {
+    console.log('NotificationBox token:', token);
     const [notifications, setNotifications] = React.useState([]);
     const [error, setError] = React.useState(null);
 
