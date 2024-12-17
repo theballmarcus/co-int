@@ -228,7 +228,7 @@ setInterval(() => {
         }
     });
     console.log('Current online users:', Array.from(onlineUsers.keys()));
-}, 30 * 1000);
+}, 10 * 1000);
 
 app.post('/post-profile-pic', upload.single('profilePic'), async (req, res) => {
     const token = req.headers.authorization?.split(' ')[1];
