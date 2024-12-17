@@ -220,11 +220,8 @@ setInterval(() => {
     const inactiveThreshold = 30 * 1000;
     
     onlineUsers.forEach((lastActive, userId) => {
-        console.log('Checking user:', userId);
-        console.log('Last active:', lastActive);
-        console.log('diff:', now - lastActive);
         if (now - lastActive > inactiveThreshold) {
-            console.log('delete user:', userId);
+            console.log('Delete user:', userId);
             onlineUsers.delete(userId); 
         }
     });
