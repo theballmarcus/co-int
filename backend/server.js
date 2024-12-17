@@ -221,6 +221,7 @@ setInterval(() => {
 
     onlineUsers.forEach((lastActive, userId) => {
         if (now - lastActive > inactiveThreshold) {
+            console.log('delete user:', userId);
             onlineUsers.delete(userId); 
         }
     });
