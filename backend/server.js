@@ -299,7 +299,7 @@ app.post('/find-match', async (req, res) => {
         const prompt = `Find 5 matches for a player with the following tags: "${userTags.join(', ')}". The match should have similar interests and playstyles. Output the userId of the matched player. ONLY if not enough users are present are you allowed to write the same one. Here is the list of all players and their tags:\n\n ${allUsers.map(u => `${u._id}: ${u.tags.join(', ')}`).join('\n ')}\n\nOutput the users in the following format, do not write anything besides this:\n["userId1", "userId2", "userId3", "userId4", "userId5"]`;
         console.log('Prompt:', prompt); 
         const gptResponse = await openai.chat.completions.create({
-            model: 'gpt-4o-mini',
+            model: 'gpt-4o',
             messages: [
                 {
                     role: 'system',
