@@ -100,8 +100,6 @@ const Register = () => {
                             className='register-confirm-password'
                         />
                     </div>
-                    {responseMessage && <p style={{ color: 'green' }}>{responseMessage}</p>}
-                    {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
                     <Button
                             type="submit"
                             sx={{
@@ -126,6 +124,8 @@ const Register = () => {
                     display: 'none'
                 }}>Register</button>
             </form>
+            {responseMessage && <p style={{ color: 'green' }}>{responseMessage}</p>}
+            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         </div>
     );
 };
