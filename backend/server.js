@@ -218,14 +218,12 @@ app.post('/heartbeat', async (req, res) => {
 setInterval(() => {
     const now = Date.now();
     const inactiveThreshold = 30 * 1000;
-    console.log(onlineUsers.keys());
     onlineUsers.forEach((lastActive, userId) => {
         if (now - lastActive > inactiveThreshold) {
             console.log('Delete user:', userId);
             onlineUsers.delete(userId); 
         }
     });
-    // console.log('Current online users:', Array.from(onlineUsers.keys()));
 }, 10 * 1000);
 
 app.post('/post-profile-pic', upload.single('profilePic'), async (req, res) => {
