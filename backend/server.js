@@ -225,7 +225,7 @@ setInterval(() => {
             onlineUsers.delete(userId); 
         }
     });
-    console.log('Current online users:', Array.from(onlineUsers.keys()));
+    // console.log('Current online users:', Array.from(onlineUsers.keys()));
 }, 10 * 1000);
 
 app.post('/post-profile-pic', upload.single('profilePic'), async (req, res) => {
