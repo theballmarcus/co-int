@@ -90,6 +90,7 @@ export const AuthProvider = ({ children }) => {
     }, [token, isLoggedIn]);
 
     const logout = () => {
+        localStorage.removeItem('userId');
         localStorage.removeItem('authToken');
         localStorage.removeItem('friends');
         localStorage.removeItem('description');
