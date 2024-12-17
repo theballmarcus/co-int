@@ -38,6 +38,34 @@ const Register = () => {
             padding: '0px',
             margin: '0px',
         }}>
+    <div style={{ position: 'relative' }}>
+    {responseMessage && (
+        <p
+            style={{
+                color: 'green',
+                position: 'absolute',
+                top: 0,
+                right: 0,
+            }}
+        >
+            {responseMessage}
+        </p>
+    )}
+    {errorMessage && (
+        <p
+            style={{
+                color: 'red',
+                position: 'absolute',
+                top: 0,
+                right: 0,
+            }}
+        >
+            {errorMessage}
+        </p>
+    )}
+    {/* Other content */}
+</div>
+
             <form 
                 onSubmit={handleSubmit} style={{ 
                 width: '100%',  
@@ -126,8 +154,6 @@ const Register = () => {
                 }}>Register</button>
             </form>
         </div>
-        {responseMessage && <p style={{ color: 'green' }}>{responseMessage}</p>}
-        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         </>
     );
 };
