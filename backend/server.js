@@ -320,7 +320,7 @@ app.post('/find-match', async (req, res) => {
         } else {
             curMatch = rawMatch;
         }
-        const match = JSON.parse(rawMatch);
+        const match = JSON.parse(curMatch);
         if (!Array.isArray(match)) {
             throw new Error('Invalid response from OpenAI');
         }
