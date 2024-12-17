@@ -400,8 +400,11 @@ app.get('/get-friends', async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        const friends = await User.find({ _id: { $in: user.friends } });
+        const friends = await User.find({ _id: { $in: user.friends } })
+        
         const onlineFriends = friends.map(friend => {
+            console.log('Online Users:', onlineUsers);
+            console.log('Friend ID:', friend._id);
             return {
                 userId: friend._id,
                 gamertag: friend.gamertag,
