@@ -38,33 +38,32 @@ const Register = () => {
             padding: '0px',
             margin: '0px',
         }}>
-    <div style={{ position: 'relative' }}>
-    {responseMessage && (
-        <p
-            style={{
-                color: 'green',
-                position: 'absolute',
-                top: 0,
-                right: 0,
-            }}
-        >
-            {responseMessage}
-        </p>
-    )}
-    {errorMessage && (
-        <p
-            style={{
-                color: 'red',
-                position: 'absolute',
-                top: 0,
-                right: 0,
-            }}
-        >
-            {errorMessage}
-        </p>
-    )}
-    {/* Other content */}
-</div>
+        <div style={{ position: 'relative' }}>
+            {responseMessage && (
+                <p
+                    style={{
+                        color: 'green',
+                        position: 'absolute',
+                        top: 0,
+                        right: '50px',
+                    }}
+                >
+                    {responseMessage}
+                </p>
+            )}
+            {errorMessage && (
+                <p
+                    style={{
+                        color: 'red',
+                        position: 'absolute',
+                        top: 0,
+                        right: '50px',
+                    }}
+                >
+                    {errorMessage}
+                </p>
+            )}
+        </div>
 
             <form 
                 onSubmit={handleSubmit} style={{ 
