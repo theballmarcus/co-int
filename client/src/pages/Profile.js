@@ -106,10 +106,6 @@ const Profile = () => {
         input.click();
     };
 
-    React.useEffect(() => {
-        console.log('Tags:', tags);
-    }, [tags]);
-
     return (
         <Box>
             {isLoggedIn ? (
