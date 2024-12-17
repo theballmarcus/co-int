@@ -404,7 +404,7 @@ app.get('/get-friends', async (req, res) => {
         const onlineFriends = friends.map(friend => {
             console.log('Online Users:', onlineUsers);
             console.log('Friend ID:', friend._id);
-            console.log('Online:', onlineUsers.has(friend._id));
+            console.log('Online:', onlineUsers.has(friend._id.toString()));
             return {
                 userId: friend._id,
                 gamertag: friend.gamertag,
