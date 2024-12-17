@@ -7,19 +7,20 @@ const NotificationBox = ({ token }) => {
     const { isLoading } = useAuth();
     const [notifications, setNotifications] = React.useState([]);
     const [error, setError] = React.useState(null);
-    const [hasFetched, setHasFetched] = React.useState(false); // Tracks if notifications were already fetched
+    const [hasFetched, setHasFetched] = React.useState(false); 
 
     React.useEffect(() => {
         if (!isLoading && !hasFetched) {
+            setHasFetched(true)
             const fetchNotifications = async () => {
                 console.log('Fetching notifications');
                 try {
                     const data = await getNotifications(token);
                     setNotifications(data.notifications);
-                    setHasFetched(true); // Mark as fetched
+                    // setHasFetched(true);
                 } catch (err) {
                     setError('Failed to load notifications');
-                    setHasFetched(true); // Still mark as fetched to avoid retry
+                    // setHasFetched(true);
                 }
             };
             fetchNotifications();
