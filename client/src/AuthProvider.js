@@ -27,16 +27,16 @@ export const AuthProvider = ({ children }) => {
         
         if (tokenCook && (token !== '' || token !== null)) {
             setIsLoggedIn(true);
-            setToken(token);
+            setToken(tokenCook);
         }
     
-        if (friendsCook) setFriends(JSON.parse(friends));
-        if (descriptionCook) setDescription(JSON.parse(description));
-        if (gamertagCook) setGamertag(JSON.parse(gamertag));
-        if (ageCook) setAge(JSON.parse(age));
-        if (emailCook) setEmail(JSON.parse(email));
-        if (tagsCook) setTags(JSON.parse(tags));
-        if (userIdCook) setUserId(JSON.parse(userId));
+        if (friendsCook) setFriends(JSON.parse(friendsCook));
+        if (descriptionCook) setDescription(JSON.parse(descriptionCook));
+        if (gamertagCook) setGamertag(JSON.parse(gamertagCook));
+        if (ageCook) setAge(JSON.parse(ageCook));
+        if (emailCook) setEmail(JSON.parse(emailCook));
+        if (tagsCook) setTags(JSON.parse(tagsCook));
+        if (userIdCook) setUserId(JSON.parse(userIdCook));
     }, []);
 
     const login = async (email, password) => {
