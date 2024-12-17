@@ -219,7 +219,7 @@ export const getNotifications = async (token) => {
                 throw new Error(`Error: ${response.statusText}`);
             }
             data = await response.json()
-            return await response.json();
+            return data;
         }
         catch (error) {
             console.error('Error getting notifications:', error);
