@@ -16,27 +16,27 @@ export const AuthProvider = ({ children }) => {
     const [userId, setUserId] = useState(null);
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        const friends = localStorage.getItem('friends');
-        const description = localStorage.getItem('description');
-        const gamertag = localStorage.getItem('gamertag');
-        const age = localStorage.getItem('age');
-        const email = localStorage.getItem('email');
-        const tags = localStorage.getItem('tags');
-        const userId = localStorage.getItem('userId');
+        const tokenCook = localStorage.getItem('authToken');
+        const friendsCook = localStorage.getItem('friends');
+        const descriptionCook = localStorage.getItem('description');
+        const gamertagCook = localStorage.getItem('gamertag');
+        const ageCook = localStorage.getItem('age');
+        const emailCook = localStorage.getItem('email');
+        const tagsCook = localStorage.getItem('tags');
+        const userIdCook = localStorage.getItem('userId');
         
-        if (token) {
+        if (tokenCook && (token !== '' || token !== null)) {
             setIsLoggedIn(true);
             setToken(token);
         }
     
-        if (friends) setFriends(JSON.parse(friends));
-        if (description) setDescription(JSON.parse(description));
-        if (gamertag) setGamertag(JSON.parse(gamertag));
-        if (age) setAge(JSON.parse(age));
-        if (email) setEmail(JSON.parse(email));
-        if (tags) setTags(JSON.parse(tags));
-        if (userId) setUserId(JSON.parse(userId));
+        if (friendsCook) setFriends(JSON.parse(friends));
+        if (descriptionCook) setDescription(JSON.parse(description));
+        if (gamertagCook) setGamertag(JSON.parse(gamertag));
+        if (ageCook) setAge(JSON.parse(age));
+        if (emailCook) setEmail(JSON.parse(email));
+        if (tagsCook) setTags(JSON.parse(tags));
+        if (userIdCook) setUserId(JSON.parse(userId));
     }, []);
 
     const login = async (email, password) => {
