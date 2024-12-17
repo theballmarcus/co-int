@@ -100,6 +100,14 @@ export const AuthProvider = ({ children }) => {
         
         setIsLoggedIn(false);
         setUser(null);
+        setToken(null);
+        setFriends(null);
+        setDescription(null);
+        setGamertag(null);
+        setAge(null);
+        setEmail(null);
+        setTags([]);
+        setUserId(null);
     };
 
     const value = {
