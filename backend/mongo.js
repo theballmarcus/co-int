@@ -25,15 +25,6 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true });
 const User = mongoose.model('User', userSchema);
 
-const messageSchema = new mongoose.Schema({
-  sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  receiver: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  content: { type: String, required: true }, 
-  sentAt: { type: Date, default: Date.now }, 
-  seen: { type: Boolean, default: false }, 
-}, { timestamps: true });
-const Message = mongoose.model('Message', messageSchema);
-
 const notificationSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, 
   content: { type: String, required: true }, 

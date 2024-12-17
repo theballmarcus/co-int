@@ -35,7 +35,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Custom imports
-const { User, Message, Notification, flushCollection} = require('./mongo'); 
+const { User, Notification, flushCollection} = require('./mongo'); 
 require('dotenv').config();
 
 let openai;
@@ -432,9 +432,9 @@ app.get('/get-notifications', async (req, res) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const userId = decoded.userId;
         const notifications = await Notification.find({ user: userId }).sort({ createdAt: -1 }).limit(5);
-        await Notification.updateMany({ user: userId }, { seen: true });
 
         res.status(200).json({ notifications });
+        await Notification.updateMany({ user: userId }, { seen: true });
 
     } catch (error) {
         console.error('Error getting notifications:', error);
