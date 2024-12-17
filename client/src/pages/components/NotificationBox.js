@@ -17,7 +17,7 @@ const NotificationBox = ({ token }) => {
         };
 
         fetchNotifications();
-    }, [token]);
+    }, []);
 
     return (
         <div style={{
