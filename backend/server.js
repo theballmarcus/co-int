@@ -217,7 +217,7 @@ app.post('/heartbeat', async (req, res) => {
 
 setInterval(() => {
     const now = Date.now();
-    const inactiveThreshold = 30 * 1000;
+    const inactiveThreshold = 20 * 1000;
     onlineUsers.forEach((lastActive, userId) => {
         if (now - lastActive > inactiveThreshold) {
             console.log('Delete user:', userId);
@@ -296,7 +296,7 @@ app.post('/find-match', async (req, res) => {
                 $not: { $size: 0 }
             }
         });
-        const prompt = `Find 5 matches for a player with the following tags: "${userTags.join(', ')}". The match should have similar interests and playstyles. Output the userId of the matched player. If not enough players and tags are present, then you're allowed to write the same one multiple times but dont mention it and try to avoid it. Here is the list of all players and their tags:\n\n ${allUsers.map(u => `${u._id}: ${u.tags.join(', ')}`).join('\n ')}\n\nOutput the users in the following format, do not write anything besides this:\n["userId1", "userId2", "userId3", "userId4", "userId5"]`;
+        const prompt = `Find 5 matches for a player with the following tags: "${userTags.join(', ')}". The match should have similar interests and playstyles. Output the userId of the matched player. If very few players are present, then you're allowed to write the same one. Here is the list of all players and their tags:\n\n ${allUsers.map(u => `${u._id}: ${u.tags.join(', ')}`).join('\n ')}\n\nOutput the users in the following format, do not write anything besides this:\n["userId1", "userId2", "userId3", "userId4", "userId5"]`;
         console.log('Prompt:', prompt); 
         const gptResponse = await openai.chat.completions.create({
             model: 'gpt-4o-mini',
