@@ -14,8 +14,10 @@ export const AuthProvider = ({ children }) => {
     const [tags, setTags] = useState([]);
     const [token, setToken] = useState(null);
     const [userId, setUserId] = useState(null);
+    const [isLoading, setIsLoading] = useState(null);
 
     useEffect(() => {
+        setIsLoading(true)
         const tokenCook = localStorage.getItem('authToken');
         const friendsCook = localStorage.getItem('friends');
         const descriptionCook = localStorage.getItem('description');
@@ -37,6 +39,7 @@ export const AuthProvider = ({ children }) => {
         if (emailCook) setEmail(JSON.parse(emailCook));
         if (tagsCook) setTags(JSON.parse(tagsCook));
         if (userIdCook) setUserId(JSON.parse(userIdCook));
+        setIsLoading(false);
     }, []);
 
     const login = async (email, password) => {
@@ -126,6 +129,7 @@ export const AuthProvider = ({ children }) => {
         tags,
         setTags,
         userId,
+        isLoading,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

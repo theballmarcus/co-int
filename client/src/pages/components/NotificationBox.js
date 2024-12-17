@@ -1,24 +1,26 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 import { getNotifications } from '../../api';
+import { useAuth } from '../../AuthProvider';
 
 const NotificationBox = ({ token }) => {
-    console.log('NotificationBox token:', token);
+    const { isLoading } = useAuth();
     const [notifications, setNotifications] = React.useState([]);
     const [error, setError] = React.useState(null);
 
     React.useEffect(() => {
         console.log('Fetching notifications');
-        const fetchNotifications = async () => {
-            try {
-                const data = await getNotifications(token);
-                setNotifications(data.notifications);
-            } catch (err) {
-                setError('Failed to load notifications');
-            }
-        };
-
-        fetchNotifications();
+        if(isLoading === false) {
+            const fetchNotifications = async () => {
+                try {
+                    const data = await getNotifications(token);
+                    setNotifications(data.notifications);
+                } catch (err) {
+                    setError('Failed to load notifications');
+                }
+            };
+            fetchNotifications();
+        }
     }, []);
 
     return (
