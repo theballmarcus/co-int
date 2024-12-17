@@ -91,6 +91,13 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         localStorage.removeItem('authToken');
+        localStorage.removeItem('friends');
+        localStorage.removeItem('description');
+        localStorage.removeItem('gamertag');
+        localStorage.removeItem('age');
+        localStorage.removeItem('email');
+        localStorage.removeItem('tags');
+        
         setIsLoggedIn(false);
         setUser(null);
     };
