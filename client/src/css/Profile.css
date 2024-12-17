@@ -1,3 +1,6 @@
+.profile-info-container {
+    overflow: hidden;
+}
 .profile-page-content {
     display: flex;
     flex-direction: row;
