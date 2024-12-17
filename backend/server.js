@@ -392,7 +392,7 @@ app.get('/get-friends', async (req, res) => {
     if (!token) {
         return res.status(401).json({ message: 'Authorization token is required' });
     }
-
+    console.log('BREAK\n\n\n\n')
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const userId = decoded.userId;
