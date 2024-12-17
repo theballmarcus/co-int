@@ -410,7 +410,7 @@ app.get('/get-friends', async (req, res) => {
                 gamertag: friend.gamertag,
                 tags: friend.tags,
                 discord: friend.discord,
-                isOnline: onlineUsers.has(friend._id),
+                isOnline: onlineUsers.has(friend._id.toString()),
             };
         });
 
