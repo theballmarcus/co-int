@@ -14,14 +14,17 @@ const NotificationBox = ({ token }) => {
             setHasFetched(true)
             const fetchNotifications = async () => {
                 console.log('Fetching notifications');
-                try {
-                    const data = await getNotifications(token);
-                    setNotifications(data.notifications);
-                    // setHasFetched(true);
-                } catch (err) {
-                    setError('Failed to load notifications');
-                    // setHasFetched(true);
+                if(hasFetched !== true) {
+                    try {
+                        const data = await getNotifications(token);
+                        setNotifications(data.notifications);
+                        // setHasFetched(true);
+                    } catch (err) {
+                        setError('Failed to load notifications');
+                        // setHasFetched(true);
+                    }
                 }
+
             };
             fetchNotifications();
         }
