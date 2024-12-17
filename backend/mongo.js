@@ -79,4 +79,4 @@ async function flushCollection() {
   }
 }
 
-module.exports = { User, Message, Notification, ensureSampleUsers, flushCollection};
+module.exports = { User, Notification, ensureSampleUsers, flushCollection};
