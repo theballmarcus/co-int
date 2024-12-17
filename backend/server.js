@@ -218,7 +218,7 @@ app.post('/heartbeat', async (req, res) => {
 setInterval(() => {
     const now = Date.now();
     const inactiveThreshold = 30 * 1000;
-    
+    console.log(onlineUsers.keys());
     onlineUsers.forEach((lastActive, userId) => {
         if (now - lastActive > inactiveThreshold) {
             console.log('Delete user:', userId);
