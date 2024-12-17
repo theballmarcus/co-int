@@ -314,7 +314,9 @@ app.post('/find-match', async (req, res) => {
         });
         console.log('GPT Response:', gptResponse.choices[0].message.content);
         const rawMatch = gptResponse.choices[0].message.content.trim();
-
+        if(rawMatch.startsWith('```json')) {
+            rawMatch = rawMatch.substring(7, rawMatch.length - 3);
+        }
         const match = JSON.parse(rawMatch);
         if (!Array.isArray(match)) {
             throw new Error('Invalid response from OpenAI');
