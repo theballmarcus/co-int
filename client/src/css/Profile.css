@@ -12,6 +12,7 @@
     align-items: start;
     margin-left: 50px;
     max-width: 800px;
+    overflow: hidden;
 }
 
 .profile-picture-container {
