@@ -33,6 +33,7 @@ const Register = () => {
     };
 
     return (
+        < >
         <div style={{
             padding: '0px',
             margin: '0px',
@@ -124,9 +125,10 @@ const Register = () => {
                     display: 'none'
                 }}>Register</button>
             </form>
-            {responseMessage && <p style={{ color: 'green' }}>{responseMessage}</p>}
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         </div>
+        {responseMessage && <p style={{ color: 'green' }}>{responseMessage}</p>}
+        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+        </>
     );
 };
 
