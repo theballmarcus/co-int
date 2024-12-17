@@ -1,32 +1,25 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 import { getNotifications } from '../../api';
-import { useAuth } from '../../AuthProvider';
 
 const NotificationBox = ({ token }) => {
-    const { isLoading } = useAuth();
     const [notifications, setNotifications] = React.useState([]);
     const [error, setError] = React.useState(null);
-    const [hasFetched, setHasFetched] = React.useState(false); 
 
     React.useEffect(() => {
-        if (!isLoading && !hasFetched) {
-            setHasFetched(true)
-            const fetchNotifications = async () => {
-                console.log('Fetching notifications');
-                if(hasFetched !== true) {
-                    try {
-                        const data = await getNotifications(token);
-                        setNotifications(data.notifications);
-                    } catch (err) {
-                        setError('Failed to load notifications');
-                    }
-                }
+        const fetchNotifications = async () => {
+            console.log('Fetching notifications');
+            try {
+                const data = await getNotifications(token);
+                setNotifications(data.notifications);
+            } catch (err) {
+                setError('Failed to load notifications');
+            }
 
-            };
-            fetchNotifications();
-        }
-    }, [isLoading, hasFetched, token]);
+        };
+        fetchNotifications();
+        
+    }, [token]);
 
     return (
         <div style={{
