@@ -7,6 +7,7 @@ const NotificationBox = ({ token }) => {
     const [error, setError] = React.useState(null);
 
     React.useEffect(() => {
+        console.log('Fetching notifications');
         const fetchNotifications = async () => {
             try {
                 const data = await getNotifications(token);
