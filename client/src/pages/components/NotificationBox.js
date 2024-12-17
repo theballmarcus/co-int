@@ -21,6 +21,7 @@ const NotificationBox = ({ token }) => {
     //     fetchNotifications();
         
     // }, [token]);
+    
     React.useEffect(() => {
         const fetchNotifications = async () => {
             console.log('Fetching notifications');
