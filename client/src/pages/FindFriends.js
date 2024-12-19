@@ -73,8 +73,16 @@ const FindFriends = () => {
                                     }}
                                     onClick={() => findMatchesLocal(token)}
                                 >
-                                    Find
+                                    Find 
                                 </Button>
+                                <Typography variant="body1" sx={{ 
+                                    marginBottom: '20px', 
+                                    color: "#b3b3b3",
+                                    fontSize: '30px',
+                                    marginLeft: '10px'
+                                    }}>
+                                    Then go to Friends page 
+                                </Typography>
                             </div>
 
                             <div className='found-matches-container'>
