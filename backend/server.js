@@ -312,7 +312,7 @@ app.post('/find-match', async (req, res) => {
                     content: prompt
                 }
             ],
-            max_tokens: 100,
+            max_tokens: 2000,
         });
         console.log('GPT Response:', gptResponse.choices[0].message.content);
         const rawMatch = gptResponse.choices[0].message.content.trim();
