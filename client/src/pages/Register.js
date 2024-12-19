@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { registerUser } from '../api'; 
 import { Button } from '@mui/material';
+import { useAuth } from '../AuthProvider';
 
 const Register = () => {
+    const { login } = useAuth()
     const [formData, setFormData] = useState({
         gamertag: '',
         age: '',
@@ -25,7 +27,17 @@ const Register = () => {
         try {
             const response = await registerUser(formData);
             setResponseMessage(response.message);
-            setErrorMessage('');
+            setErrorMessage(''); 
+            
+            try {
+                const response = await login(formData.email, formData.password);
+                setResponseMessage(response.message);
+                setErrorMessage('');
+            } catch (error) {
+                setErrorMessage(error.message || 'An error occurred');
+                setResponseMessage('');
+            } 
+
         } catch (error) {
             setErrorMessage(error.message || 'An error occurred');
             setResponseMessage('');

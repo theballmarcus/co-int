@@ -56,6 +56,26 @@ const Home = () => {
                                     {gamertag}'s Tags
                                 </Typography>
                                 <div className="user-tags">
+                                    {console.log(tags.length)}
+                                    {tags === 0 ? (
+                                            <> 
+                                            </>) : (
+                                            <>
+                                                <div 
+                                                    className="tag" 
+                                                    style={{
+                                                        backgroundColor: getRandomColor(),
+                                                        padding: '10px 20px',
+                                                        margin: '5px',
+                                                        borderRadius: '15px',
+                                                        display: 'inline-block',
+                                                    }}
+                                                >
+                                                    <h1 style={{ margin: 0, fontSize: '18px' }}>You have no tags yet, go to describe user page.</h1>
+                                                </div>
+                                            </>
+                                            )
+                                    }
                                     {tags.map((tag, index) => (
                                         <div 
                                             className="tag" 
