@@ -46,7 +46,7 @@ const Friends = () => {
                             color: "#b3b3b3",
                             fontSize: '24px', 
                         }}>
-                            Your Friends
+                            Your Discord tag's of your friends
                         </Typography>
                         <Box sx={{ 
                             display: 'flex', 
@@ -107,7 +107,7 @@ const Friends = () => {
                                                             marginLeft: '15px',
                                                         }}
                                                     >
-                                                        {friend.discord ? (friend.discord) : (friend.gamertag)}
+                                                        {friend.discord ? (friend.discord) : (< >friend.gamertag (No tag supplied)</>)}
                                                     </Typography>
                                                 </Paper>
                                             </Box>
