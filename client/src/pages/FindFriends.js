@@ -99,7 +99,8 @@ const FindFriends = () => {
                                                 <div className="match-details">
                                                     <Typography 
                                                         variant="h5" 
-                                                        sx={{ marginBottom: '10px' }}
+                                                        sx={{ marginBottom: '10px', maxWidth: '500px' }}
+                                                        
                                                     >
                                                         {match.gamertag}
                                                     </Typography>
