@@ -46,7 +46,7 @@ const Friends = () => {
                             color: "#b3b3b3",
                             fontSize: '24px', 
                         }}>
-                            Your Discord tag's of your friends
+                            Discord tag's of Friends
                         </Typography>
                         <Box sx={{ 
                             display: 'flex', 
