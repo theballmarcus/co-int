@@ -57,11 +57,9 @@ const Home = () => {
                                 </Typography>
                                 <div className="user-tags">
                                     {console.log(tags.length)}
-                                    {tags === 0 ? (
+                                    {tags.length === 0 ? (
                                             <> 
-                                            </>) : (
-                                            <>
-                                                <div 
+                                                                                            <div 
                                                     className="tag" 
                                                     style={{
                                                         backgroundColor: getRandomColor(),
@@ -73,6 +71,8 @@ const Home = () => {
                                                 >
                                                     <h1 style={{ margin: 0, fontSize: '18px' }}>You have no tags yet, go to describe user page.</h1>
                                                 </div>
+                                            </>) : (
+                                            <>
                                             </>
                                             )
                                     }
