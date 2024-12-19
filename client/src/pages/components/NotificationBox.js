@@ -6,21 +6,6 @@ const NotificationBox = ({ token }) => {
     const [notifications, setNotifications] = React.useState([]);
     const [error, setError] = React.useState(null);
     const hasFetched = React.useRef(false); // Persist the state across renders
-
-    // React.useEffect(() => {
-    //     const fetchNotifications = async () => {
-    //         console.log('Fetching notifications');
-    //         try {
-    //             const data = await getNotifications(token);
-    //             setNotifications(data.notifications);
-    //         } catch (err) {
-    //             setError('Failed to load notifications');
-    //         }
-
-    //     };
-    //     fetchNotifications();
-        
-    // }, [token]);
     
     React.useEffect(() => {
         const fetchNotifications = async () => {
@@ -33,11 +18,11 @@ const NotificationBox = ({ token }) => {
             }
         };
 
-        if (!hasFetched.current) { // Check if the fetch has already been triggered
-            hasFetched.current = true; // Mark as triggered
+        if (!hasFetched.current) { 
+            hasFetched.current = true; 
             fetchNotifications();
         }
-    }, [token]); // Dependency array includes only `token` for the first run
+    }, [token]); 
 
     return (
         <div style={{
