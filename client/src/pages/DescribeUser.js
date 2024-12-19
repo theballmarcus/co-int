@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { describeUser } from '../api'; 
 import { TextField, Button } from '@mui/material';
 import { useAuth } from '../AuthProvider';
+import { useNavigate } from 'react-router-dom';
 
 const DescribeUser = () => {
     const { description, setDescription, tags, setTags } = useAuth();
-
+    const navigate = useNavigate(); 
     const [ curDescription, setCurDescription ] = useState(description);
 
     const handleChange = (e) => {
@@ -21,6 +22,8 @@ const DescribeUser = () => {
             localStorage.setItem('description', JSON.stringify(curDescription));
             console.log('Tags:', response.tags);
             localStorage.setItem('tags', JSON.stringify(response.tags));
+            
+            navigate('/');
         } catch (error) {
             console.error(error);
         }

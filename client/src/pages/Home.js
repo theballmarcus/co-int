@@ -59,7 +59,7 @@ const Home = () => {
                                     {console.log(tags.length)}
                                     {tags.length === 0 ? (
                                             <> 
-                                                                                            <div 
+                                                <div 
                                                     className="tag" 
                                                     style={{
                                                         backgroundColor: getRandomColor(),
